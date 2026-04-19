@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Evan Scheuermann — Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0e0e0e;
+      --bg2:       #141414;
+      --bg3:       #1a1a1a;
+      --border:    #2a2a2a;
+      --gold:      #c9a84c;
+      --gold-dim:  #8a6e2f;
+      --cream:     #e8e0d0;
+      --muted:     #7a7060;
+      --text:      #d4cfc5;
+      --mono:      'DM Mono', monospace;
+      --serif:     'Playfair Display', Georgia, serif;
+      --sans:      'DM Sans', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-weight: 300;
+      line-height: 1.7;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Grain overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.4;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 3rem;
+      background: rgba(14,14,14,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-name {
+      font-family: var(--serif);
+      font-size: 1.05rem;
+      color: var(--cream);
+      letter-spacing: 0.04em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--gold); }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 8rem 3rem 4rem;
+      position: relative;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .hero-label {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.2s forwards;
+    }
+
+    .hero h1 {
+      font-family: var(--serif);
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      font-weight: 700;
+      color: var(--cream);
+      line-height: 1.05;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.4s forwards;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .hero-desc {
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 520px;
+      line-height: 1.8;
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.6s forwards;
+    }
+
+    .hero-meta {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.8s forwards;
+    }
+
+    .hero-meta a {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 2px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .hero-meta a:hover { color: var(--gold); border-color: var(--gold); }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 3rem;
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--border);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 1.2s forwards;
+    }
+
+    .hero-scroll::after {
+      content: '';
+      width: 40px;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ─── SECTIONS ─── */
+    section {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 6rem 3rem;
+    }
+
+    .section-label {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold-dim);
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 600;
+      color: var(--cream);
+      margin-bottom: 3rem;
+      line-height: 1.2;
+    }
+
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: var(--border);
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    /* ─── ABOUT ─── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .about-text p {
+      font-size: 0.975rem;
+      color: var(--text);
+      line-height: 1.85;
+      margin-bottom: 1.25rem;
+    }
+
+    .about-text p:last-child { margin-bottom: 0; }
+
+    .about-stats {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .stat-item {
+      padding: 1.5rem;
+      border: 1px solid var(--border);
+      background: var(--bg2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-item::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 2px;
+      height: 100%;
+      background: var(--gold);
+    }
+
+    .stat-label {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+    }
+
+    .stat-value {
+      font-family: var(--serif);
+      font-size: 1.1rem;
+      color: var(--cream);
+    }
+
+    /* ─── PROJECTS ─── */
+    .projects-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .project-card {
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 0;
+      display: grid;
+      grid-template-columns: 80px 1fr auto;
+      gap: 2rem;
+      align-items: start;
+      text-decoration: none;
+      transition: background 0.2s;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .project-card:last-child { border-bottom: 1px solid var(--border); }
+
+    .project-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--bg2);
+      opacity: 0;
+      transition: opacity 0.2s;
+      z-index: -1;
+      margin: 0 -3rem;
+    }
+
+    .project-card:hover::after { opacity: 1; }
+
+    .project-num {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--gold-dim);
+      letter-spacing: 0.1em;
+      padding-top: 0.3rem;
+    }
+
+    .project-body { flex: 1; }
+
+    .project-tags {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.75rem;
+    }
+
+    .tag {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      padding: 0.2rem 0.6rem;
+    }
+
+    .tag.highlight {
+      color: var(--gold);
+      border-color: var(--gold-dim);
+    }
+
+    .project-title {
+      font-family: var(--serif);
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--cream);
+      margin-bottom: 0.6rem;
+      line-height: 1.3;
+    }
+
+    .project-desc {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.75;
+      max-width: 580px;
+    }
+
+    .project-metrics {
+      display: flex;
+      gap: 1.5rem;
+      margin-top: 1.25rem;
+    }
+
+    .metric {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+
+    .metric-val {
+      font-family: var(--mono);
+      font-size: 0.95rem;
+      color: var(--gold);
+      font-weight: 500;
+    }
+
+    .metric-label {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .project-arrow {
+      font-size: 1.1rem;
+      color: var(--border);
+      padding-top: 0.3rem;
+      transition: color 0.2s, transform 0.2s;
+    }
+
+    .project-card:hover .project-arrow {
+      color: var(--gold);
+      transform: translate(3px, -3px);
+    }
+
+    /* ─── SKILLS ─── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .skill-group {
+      padding: 1.75rem;
+      border: 1px solid var(--border);
+      background: var(--bg2);
+    }
+
+    .skill-group-title {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+
+    .skill-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .skill-list li {
+      font-size: 0.875rem;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .skill-list li::before {
+      content: '—';
+      color: var(--gold-dim);
+      font-family: var(--mono);
+      font-size: 0.7rem;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 3rem;
+      max-width: 960px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-name {
+      font-family: var(--serif);
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 1.75rem;
+      list-style: none;
+    }
+
+    .footer-links a {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--gold); }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 720px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { gap: 1.5rem; }
+      .hero, section { padding-left: 1.5rem; padding-right: 1.5rem; }
+      .hero-scroll { left: 1.5rem; }
+      .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .skills-grid { grid-template-columns: 1fr; }
+      .project-card { grid-template-columns: 50px 1fr auto; gap: 1rem; }
+      footer { flex-direction: column; gap: 1.25rem; text-align: center; }
+      .project-card::after { margin: 0 -1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <span class="nav-name">Evan Scheuermann</span>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="mailto:evanscheuermann@gmail.com">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <p class="hero-label">Portfolio — Data Analysis & Machine Learning</p>
+    <h1>Evan<br><em>Scheuermann</em></h1>
+    <p class="hero-desc">
+      Mathematics student at St. John Fisher University with a focus on 
+      machine learning, econometrics, and statistical modeling. 
+      I build things that turn data into decisions.
+    </p>
+    <div class="hero-meta">
+      <a href="https://github.com/evan-scheuermann" target="_blank">GitHub</a>
+      <a href="https://www.linkedin.com/in/evan-scheuermann" target="_blank">LinkedIn</a>
+      <a href="mailto:evanscheuermann@gmail.com">evanscheuermann@gmail.com</a>
+    </div>
+    <span class="hero-scroll">Scroll to explore</span>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="reveal">
+      <p class="section-label">Background</p>
+      <h2 class="section-title">About Me</h2>
+    </div>
+    <div class="about-grid reveal">
+      <div class="about-text">
+        <p>
+          I'm a mathematics major with a minor in economics at St. John Fisher 
+          University, where I maintain a 4.0 GPA and focus on applied quantitative 
+          methods. My coursework spans machine learning, econometrics, dynamical 
+          systems, linear algebra, and differential equations.
+        </p>
+        <p>
+          My projects reflect an interest in the intersection of rigorous 
+          statistical methodology and practical business problems — from predicting 
+          customer churn for banks to quantifying the economic impact of steam power 
+          during the Industrial Revolution.
+        </p>
+        <p>
+          I work primarily in R and Python, with hands-on experience building 
+          end-to-end ML pipelines using caret, tidymodels, and ggplot2.
+        </p>
+      </div>
+      <div class="about-stats">
+        <div class="stat-item">
+          <p class="stat-label">Institution</p>
+          <p class="stat-value">St. John Fisher University</p>
+        </div>
+        <div class="stat-item">
+          <p class="stat-label">Degree</p>
+          <p class="stat-value">B.S. Mathematics, Minor in Economics</p>
+        </div>
+        <div class="stat-item">
+          <p class="stat-label">Expected Graduation</p>
+          <p class="stat-value">May 2027</p>
+        </div>
+        <div class="stat-item">
+          <p class="stat-label">GPA</p>
+          <p class="stat-value">4.0</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="reveal">
+      <p class="section-label">Work</p>
+      <h2 class="section-title">Selected Projects</h2>
+    </div>
+
+    <div class="projects-list">
+
+      <!-- Project 1: Churn -->
+      <a class="project-card reveal" href="https://github.com/evan-scheuermann/customer-churn-classification" target="_blank">
+        <span class="project-num">01</span>
+        <div class="project-body">
+          <div class="project-tags">
+            <span class="tag highlight">Machine Learning</span>
+            <span class="tag">R · caret</span>
+            <span class="tag">Classification</span>
+            <span class="tag">STAT 376</span>
+          </div>
+          <h3 class="project-title">Customer Churn Prediction</h3>
+          <p class="project-desc">
+            Comparative analysis of Random Forest, Naive Bayes, and a stacked 
+            ensemble classifier applied to a 10,000-observation bank dataset. 
+            Addressed class imbalance via downsampling and optimized the 
+            classification threshold via ROC curve analysis to maximize sensitivity 
+            — the critical metric in a customer retention context.
+          </p>
+          <div class="project-metrics">
+            <div class="metric">
+              <span class="metric-val">84.3%</span>
+              <span class="metric-label">Sensitivity</span>
+            </div>
+            <div class="metric">
+              <span class="metric-val">86.8%</span>
+              <span class="metric-label">ROC-AUC</span>
+            </div>
+            <div class="metric">
+              <span class="metric-val">0.460</span>
+              <span class="metric-label">Opt. Threshold</span>
+            </div>
+          </div>
+        </div>
+        <span class="project-arrow">↗</span>
+      </a>
+
+      <!-- Project 2: Ames Housing -->
+      <a class="project-card reveal" href="https://github.com/evan-scheuermann/ames-housing-regression" target="_blank">
+        <span class="project-num">02</span>
+        <div class="project-body">
+          <div class="project-tags">
+            <span class="tag highlight">Machine Learning</span>
+            <span class="tag">R · caret</span>
+            <span class="tag">Regression</span>
+            <span class="tag">STAT 376</span>
+          </div>
+          <h3 class="project-title">Housing Price Prediction — Ames, Iowa</h3>
+          <p class="project-desc">
+            Individual project comparing Elastic Net and Random Forest regression 
+            on the Ames housing dataset (~2,930 observations, 82 variables). 
+            Explored how algorithm architecture shapes variable importance: 
+            Elastic Net distributed weight across many features while Random Forest 
+            concentrated predictive power in a single dominant variable.
+          </p>
+          <div class="project-metrics">
+            <div class="metric">
+              <span class="metric-val">88.5%</span>
+              <span class="metric-label">RF R²</span>
+            </div>
+            <div class="metric">
+              <span class="metric-val">86.2%</span>
+              <span class="metric-label">EN R²</span>
+            </div>
+            <div class="metric">
+              <span class="metric-val">~15%</span>
+              <span class="metric-label">Pred. Error</span>
+            </div>
+          </div>
+        </div>
+        <span class="project-arrow">↗</span>
+      </a>
+
+      <!-- Project 3: Steam Power -->
+      <a class="project-card reveal" href="https://github.com/evan-scheuermann/steam-power-manufacturing" target="_blank">
+        <span class="project-num">03</span>
+        <div class="project-body">
+          <div class="project-tags">
+            <span class="tag highlight">Econometrics</span>
+            <span class="tag">R · ggplot2</span>
+            <span class="tag">Fixed Effects</span>
+            <span class="tag">ECON 314</span>
+          </div>
+          <h3 class="project-title">Steam Power & Manufacturing Productivity, 1850</h3>
+          <p class="project-desc">
+            Log-linear regression with state and industry fixed effects applied 
+            to 124,860 firms from the 1850 Census of Manufactures. Quantified 
+            the productivity premium of steam adoption and its heterogeneous 
+            effects across industries. Produced a choropleth heatmap of state 
+            fixed-effect coefficients revealing the outsized economic impact 
+            of the California Gold Rush.
+          </p>
+          <div class="project-metrics">
+            <div class="metric">
+              <span class="metric-val">+45.2%</span>
+              <span class="metric-label">Steam Premium</span>
+            </div>
+            <div class="metric">
+              <span class="metric-val">51.6%</span>
+              <span class="metric-label">R²</span>
+            </div>
+            <div class="metric">
+              <span class="metric-val">124,860</span>
+              <span class="metric-label">Observations</span>
+            </div>
+          </div>
+        </div>
+        <span class="project-arrow">↗</span>
+      </a>
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="reveal">
+      <p class="section-label">Capabilities</p>
+      <h2 class="section-title">Technical Skills</h2>
+    </div>
+    <div class="skills-grid reveal">
+      <div class="skill-group">
+        <p class="skill-group-title">Languages</p>
+        <ul class="skill-list">
+          <li>R</li>
+          <li>Python</li>
+          <li>SQL (basic)</li>
+        </ul>
+      </div>
+      <div class="skill-group">
+        <p class="skill-group-title">ML & Modeling</p>
+        <ul class="skill-list">
+          <li>caret / tidymodels</li>
+          <li>Random Forest · Elastic Net</li>
+          <li>Naive Bayes · Ensemble</li>
+          <li>Cross-validation · ROC</li>
+          <li>Fixed Effects Regression</li>
+        </ul>
+      </div>
+      <div class="skill-group">
+        <p class="skill-group-title">Visualization</p>
+        <ul class="skill-list">
+          <li>ggplot2</li>
+          <li>sf · ggpattern</li>
+          <li>Choropleth mapping</li>
+          <li>Quarto / R Markdown</li>
+        </ul>
+      </div>
+      <div class="skill-group">
+        <p class="skill-group-title">Mathematics</p>
+        <ul class="skill-list">
+          <li>Linear Algebra</li>
+          <li>Differential Equations</li>
+          <li>Dynamical Systems</li>
+          <li>Econometrics</li>
+        </ul>
+      </div>
+      <div class="skill-group">
+        <p class="skill-group-title">Tools</p>
+        <ul class="skill-list">
+          <li>RStudio / Quarto</li>
+          <li>Git / GitHub</li>
+          <li>Microsoft Excel</li>
+          <li>LaTeX</li>
+        </ul>
+      </div>
+      <div class="skill-group">
+        <p class="skill-group-title">Concepts</p>
+        <ul class="skill-list">
+          <li>Model evaluation & tuning</li>
+          <li>Class imbalance handling</li>
+          <li>Feature engineering</li>
+          <li>Data cleaning & prep</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- FOOTER -->
+  <footer>
+    <span class="footer-name">Evan Scheuermann</span>
+    <ul class="footer-links">
+      <li><a href="https://github.com/evan-scheuermann" target="_blank">GitHub</a></li>
+      <li><a href="https://www.linkedin.com/in/evan-scheuermann" target="_blank">LinkedIn</a></li>
+      <li><a href="mailto:evanscheuermann@gmail.com">Email</a></li>
+    </ul>
+  </footer>
+
+  <script>
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08 });
+    reveals.forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
