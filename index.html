@@ -11,29 +11,44 @@
   <meta property="og:url" content="https://evan-scheuermann.github.io/" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary" />
-  <meta name="theme-color" content="#1e2029" />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231e2029'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='Georgia,serif' font-size='20' font-weight='700' fill='%23c4a96a'%3EE%3C/text%3E%3C/svg%3E" />
+  <meta name="theme-color" content="#1e2029" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#f7f5f0" media="(prefers-color-scheme: light)" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,600..700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
       --bg:        #1e2029;
-      --bg2:       #252837;
       --border:    #383b4f;
       --gold:      #c4a96a;
       --gold-dim:  #7a6535;
       --cream:     #e8e4da;
       --muted:     #9296b0;
       --text:      #cdd0e0;
-      --serif:     'Playfair Display', Georgia, serif;
+      --serif:     'Source Serif 4', Georgia, serif;
       --sans:      'DM Sans', sans-serif;
       --gutter:    3rem;
       /* left/right padding that lines full-width bars up with the 960px content column */
       --edge:      max(var(--gutter), (100% - 960px) / 2 + var(--gutter));
       color-scheme: dark;
+    }
+
+    /* light mode follows the visitor's system setting */
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg:        #f7f5f0;
+        --border:    #dcd6c8;
+        --gold:      #7d6128;
+        --gold-dim:  #b39a62;
+        --cream:     #1c1f2b;
+        --muted:     #5d6178;
+        --text:      #33364a;
+        color-scheme: light;
+      }
     }
 
     html { scroll-behavior: smooth; }
@@ -63,14 +78,15 @@
       align-items: center;
       justify-content: space-between;
       padding: 1.1rem var(--edge);
-      background: rgba(30, 32, 41, 0.88);
+      background: color-mix(in srgb, var(--bg) 88%, transparent);
       backdrop-filter: blur(14px);
       border-bottom: 1px solid var(--border);
     }
 
     .nav-name {
       font-family: var(--serif);
-      font-size: 1.05rem;
+      font-weight: 600;
+      font-size: 1.1rem;
       color: var(--cream);
       text-decoration: none;
       white-space: nowrap;
@@ -92,15 +108,8 @@
 
     .nav-links a:hover { color: var(--gold); }
 
-    .nav-links .nav-resume {
-      color: var(--bg);
-      background: var(--gold);
-      font-weight: 500;
-      padding: 0.4rem 0.9rem;
-      transition: background 0.2s;
-    }
-
-    .nav-links .nav-resume:hover { background: var(--cream); color: var(--bg); }
+    .nav-links .nav-resume { color: var(--cream); font-weight: 500; }
+    .nav-links .nav-resume:hover { color: var(--gold); }
 
     /* HERO */
     .hero {
@@ -122,6 +131,7 @@
       font-weight: 700;
       color: var(--cream);
       line-height: 1.1;
+      letter-spacing: -0.01em;
       margin-bottom: 1.25rem;
     }
 
@@ -277,23 +287,10 @@
       gap: 2rem;
       align-items: start;
       text-decoration: none;
-      position: relative;
     }
 
     .project-card:last-child { border-bottom: 1px solid var(--border); }
-
-    .project-card::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: var(--bg2);
-      opacity: 0;
-      transition: opacity 0.2s;
-      z-index: -1;
-      margin: 0 calc(-1 * var(--gutter));
-    }
-
-    .project-card:hover::after { opacity: 1; }
+    .project-card:hover .project-title { color: var(--gold); }
 
     .project-tags {
       display: flex;
@@ -313,6 +310,7 @@
       color: var(--cream);
       margin-bottom: 0.6rem;
       line-height: 1.3;
+      transition: color 0.2s;
     }
 
     .project-desc {
