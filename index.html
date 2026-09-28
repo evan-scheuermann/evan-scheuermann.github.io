@@ -3,48 +3,56 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Evan Scheuermann — Portfolio</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <title>Evan Scheuermann</title>
+  <meta name="description" content="Evan Scheuermann, mathematics student at St. John Fisher University. Data engineering, machine learning, and applied AI projects." />
+  <meta property="og:title" content="Evan Scheuermann" />
+  <meta property="og:description" content="Mathematics student at St. John Fisher University. Data engineering, machine learning, and applied AI projects." />
+  <meta property="og:image" content="https://evan-scheuermann.github.io/headshot.jpg" />
+  <meta property="og:url" content="https://evan-scheuermann.github.io/" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="theme-color" content="#1e2029" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231e2029'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='Georgia,serif' font-size='20' font-weight='700' fill='%23c4a96a'%3EE%3C/text%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
       --bg:        #1e2029;
       --bg2:       #252837;
-      --bg3:       #2d3047;
       --border:    #383b4f;
       --gold:      #c4a96a;
       --gold-dim:  #7a6535;
       --cream:     #e8e4da;
-      --muted:     #6e7191;
+      --muted:     #9296b0;
       --text:      #cdd0e0;
-      --cyan:      #7ec8c8;
-      --mono:      'DM Mono', monospace;
       --serif:     'Playfair Display', Georgia, serif;
       --sans:      'DM Sans', sans-serif;
+      --gutter:    3rem;
+      /* left/right padding that lines full-width bars up with the 960px content column */
+      --edge:      max(var(--gutter), (100% - 960px) / 2 + var(--gutter));
+      color-scheme: dark;
     }
 
     html { scroll-behavior: smooth; }
+
+    ::selection { background: var(--gold); color: var(--bg); }
+    h1, h2, h3 { text-wrap: balance; }
+    p, li, dd { text-wrap: pretty; }
 
     body {
       background: var(--bg);
       color: var(--text);
       font-family: var(--sans);
-      font-weight: 300;
+      font-weight: 400;
       line-height: 1.7;
       min-height: 100vh;
       overflow-x: hidden;
     }
 
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 1000;
-      opacity: 0.35;
-    }
+    a:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
 
     /* NAV */
     nav {
@@ -54,7 +62,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 1.25rem 3rem;
+      padding: 1.1rem var(--edge);
       background: rgba(30, 32, 41, 0.88);
       backdrop-filter: blur(14px);
       border-bottom: 1px solid var(--border);
@@ -64,45 +72,39 @@
       font-family: var(--serif);
       font-size: 1.05rem;
       color: var(--cream);
-      letter-spacing: 0.04em;
+      text-decoration: none;
+      white-space: nowrap;
     }
 
     .nav-links {
       display: flex;
-      gap: 2.5rem;
+      gap: 1.75rem;
       list-style: none;
       align-items: center;
     }
 
     .nav-links a {
-      font-family: var(--mono);
-      font-size: 0.72rem;
+      font-size: 0.875rem;
       color: var(--muted);
       text-decoration: none;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
       transition: color 0.2s;
     }
 
     .nav-links a:hover { color: var(--gold); }
 
-    .nav-resume {
-      color: var(--bg) !important;
+    .nav-links .nav-resume {
+      color: var(--bg);
       background: var(--gold);
+      font-weight: 500;
       padding: 0.4rem 0.9rem;
-      transition: background 0.2s !important;
+      transition: background 0.2s;
     }
 
-    .nav-resume:hover { background: var(--cream) !important; color: var(--bg) !important; }
+    .nav-links .nav-resume:hover { background: var(--cream); color: var(--bg); }
 
     /* HERO */
     .hero {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 8rem 3rem 4rem;
-      position: relative;
+      padding: 10rem var(--gutter) 6rem;
       max-width: 960px;
       margin: 0 auto;
     }
@@ -114,74 +116,48 @@
       align-items: center;
     }
 
-    .hero-label {
-      font-family: var(--mono);
-      font-size: 0.7rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 1.5rem;
-      opacity: 0;
-      animation: fadeUp 0.8s ease 0.2s forwards;
-    }
-
     .hero h1 {
       font-family: var(--serif);
-      font-size: clamp(3rem, 7vw, 5.5rem);
+      font-size: clamp(2.25rem, 6vw, 4rem);
       font-weight: 700;
       color: var(--cream);
-      line-height: 1.05;
-      margin-bottom: 1.5rem;
-      opacity: 0;
-      animation: fadeUp 0.8s ease 0.4s forwards;
+      line-height: 1.1;
+      margin-bottom: 1.25rem;
     }
-
-    .hero h1 em { font-style: italic; color: var(--gold); }
 
     .hero-desc {
-      font-size: 1rem;
+      font-size: 1.05rem;
       color: var(--muted);
       max-width: 520px;
-      line-height: 1.85;
-      margin-bottom: 2.5rem;
-      opacity: 0;
-      animation: fadeUp 0.8s ease 0.6s forwards;
+      line-height: 1.8;
+      margin-bottom: 2.25rem;
     }
-
-    .hero-desc strong { color: var(--cyan); font-weight: 400; }
 
     .hero-actions {
       display: flex;
-      gap: 1.25rem;
+      gap: 1rem;
       flex-wrap: wrap;
       margin-bottom: 2rem;
-      opacity: 0;
-      animation: fadeUp 0.8s ease 0.75s forwards;
+    }
+
+    .btn-primary, .btn-secondary {
+      font-size: 0.9rem;
+      font-weight: 500;
+      padding: 0.65rem 1.3rem;
+      text-decoration: none;
     }
 
     .btn-primary {
-      font-family: var(--mono);
-      font-size: 0.72rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
       color: var(--bg);
       background: var(--gold);
-      padding: 0.65rem 1.4rem;
-      text-decoration: none;
       transition: background 0.2s;
     }
 
     .btn-primary:hover { background: var(--cream); }
 
     .btn-secondary {
-      font-family: var(--mono);
-      font-size: 0.72rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--muted);
+      color: var(--text);
       border: 1px solid var(--border);
-      padding: 0.65rem 1.4rem;
-      text-decoration: none;
       transition: color 0.2s, border-color 0.2s;
     }
 
@@ -189,17 +165,12 @@
 
     .hero-meta {
       display: flex;
-      gap: 2rem;
+      gap: 0.75rem 1.75rem;
       flex-wrap: wrap;
-      opacity: 0;
-      animation: fadeUp 0.8s ease 0.9s forwards;
     }
 
     .hero-meta a {
-      font-family: var(--mono);
-      font-size: 0.7rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
+      font-size: 0.875rem;
       color: var(--muted);
       text-decoration: none;
       border-bottom: 1px solid var(--border);
@@ -209,18 +180,6 @@
 
     .hero-meta a:hover { color: var(--gold); border-color: var(--gold); }
 
-    /*
-      HEADSHOT INSTRUCTIONS:
-      1. Save your LinkedIn photo as "headshot.jpg"
-      2. Upload it to your evan-scheuermann.github.io repo alongside index.html
-      3. Delete the .photo-placeholder div and uncomment the <img> tag below
-    */
-    .hero-photo {
-      opacity: 0;
-      animation: fadeUp 0.8s ease 0.5s forwards;
-      flex-shrink: 0;
-    }
-
     .hero-photo img {
       width: 200px;
       height: 200px;
@@ -228,163 +187,97 @@
       object-position: center top;
       border-radius: 50%;
       border: 2px solid var(--border);
-      filter: grayscale(15%) contrast(1.05);
       display: block;
-    }
-
-    .photo-placeholder {
-      width: 200px;
-      height: 200px;
-      border-radius: 50%;
-      border: 2px dashed var(--border);
-      background: var(--bg2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .photo-placeholder span {
-      font-family: var(--mono);
-      font-size: 0.58rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--border);
-      text-align: center;
-      padding: 1rem;
-      line-height: 1.7;
-    }
-
-    .hero-scroll {
-      position: absolute;
-      bottom: 2.5rem;
-      left: 3rem;
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--border);
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      opacity: 0;
-      animation: fadeUp 0.8s ease 1.2s forwards;
-    }
-
-    .hero-scroll::after {
-      content: '';
-      width: 40px;
-      height: 1px;
-      background: var(--border);
     }
 
     /* SECTIONS */
     section {
       max-width: 960px;
       margin: 0 auto;
-      padding: 6rem 3rem;
-    }
-
-    .section-label {
-      font-family: var(--mono);
-      font-size: 0.68rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--gold-dim);
-      margin-bottom: 0.75rem;
+      padding: 5rem var(--gutter);
     }
 
     .section-title {
       font-family: var(--serif);
-      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-size: clamp(1.75rem, 3.5vw, 2.25rem);
       font-weight: 600;
       color: var(--cream);
-      margin-bottom: 3rem;
+      margin-bottom: 2rem;
       line-height: 1.2;
     }
 
     .divider {
-      width: 100%;
       height: 1px;
       background: var(--border);
-      max-width: 960px;
-      margin: 0 auto;
+      margin: 0 var(--edge);
     }
 
     /* ABOUT */
-    .about-grid {
+    .about-text { max-width: 640px; margin-bottom: 3.5rem; }
+    .about-text p { font-size: 1.05rem; line-height: 1.8; margin-bottom: 1.1rem; }
+    .about-text p:last-child { margin-bottom: 0; }
+
+    .about-cols {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 4rem;
+      gap: 3rem;
       align-items: start;
     }
 
-    .about-text p {
-      font-size: 0.975rem;
-      color: var(--text);
-      line-height: 1.85;
-      margin-bottom: 1.25rem;
+    .side-heading {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--gold);
+      margin-bottom: 0.75rem;
     }
 
-    .about-text p:last-child { margin-bottom: 0; }
+    .side-list { list-style: none; border-bottom: 1px solid var(--border); }
+    .side-list li { padding: 0.8rem 0; border-top: 1px solid var(--border); }
+    .side-list strong { display: block; font-weight: 500; color: var(--cream); }
+    .side-list span { display: block; font-size: 0.875rem; color: var(--muted); }
 
-    .about-stats { display: flex; flex-direction: column; gap: 1.5rem; }
+    /* EXPERIENCE */
+    .job { padding: 2rem 0; border-top: 1px solid var(--border); }
 
-    .stat-item {
-      padding: 1.5rem;
-      border: 1px solid var(--border);
-      background: var(--bg2);
-      position: relative;
-      overflow: hidden;
+    .job-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 0.25rem 1rem;
     }
 
-    .stat-item::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0;
-      width: 2px;
-      height: 100%;
-      background: var(--gold);
-    }
-
-    .stat-label {
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 0.4rem;
-    }
-
-    .stat-value {
+    .job-title {
       font-family: var(--serif);
-      font-size: 1.05rem;
+      font-size: 1.25rem;
+      font-weight: 600;
       color: var(--cream);
-      line-height: 1.4;
     }
 
-    .stat-value small {
-      display: block;
-      font-family: var(--mono);
-      font-size: 0.62rem;
+    .job-date { font-size: 0.875rem; color: var(--muted); white-space: nowrap; }
+    .job-org { font-size: 0.925rem; color: var(--muted); }
+
+    .job ul { margin-top: 0.9rem; padding-left: 1.1rem; max-width: 640px; }
+    .job li { margin-bottom: 0.4rem; }
+    .job li::marker { color: var(--gold-dim); }
+
+    .job-earlier {
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.9rem;
       color: var(--muted);
-      font-style: normal;
-      margin-top: 0.25rem;
-      letter-spacing: 0.04em;
     }
 
     /* PROJECTS */
-    .projects-list { display: flex; flex-direction: column; }
-
     .project-card {
       border-top: 1px solid var(--border);
-      padding: 2.5rem 0;
+      padding: 2.25rem 0;
       display: grid;
-      grid-template-columns: 80px 1fr auto;
+      grid-template-columns: 1fr auto;
       gap: 2rem;
       align-items: start;
       text-decoration: none;
       position: relative;
-      cursor: pointer;
     }
 
     .project-card:last-child { border-bottom: 1px solid var(--border); }
@@ -397,42 +290,25 @@
       opacity: 0;
       transition: opacity 0.2s;
       z-index: -1;
-      margin: 0 -3rem;
+      margin: 0 calc(-1 * var(--gutter));
     }
 
     .project-card:hover::after { opacity: 1; }
 
-    .project-num {
-      font-family: var(--mono);
-      font-size: 0.7rem;
-      color: var(--gold-dim);
-      letter-spacing: 0.1em;
-      padding-top: 0.3rem;
-    }
-
     .project-tags {
       display: flex;
-      gap: 0.5rem;
       flex-wrap: wrap;
-      margin-bottom: 0.75rem;
-    }
-
-    .tag {
-      font-family: var(--mono);
-      font-size: 0.6rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
+      font-size: 0.825rem;
       color: var(--muted);
-      border: 1px solid var(--border);
-      padding: 0.2rem 0.6rem;
+      margin-bottom: 0.4rem;
     }
 
-    .tag.highlight { color: var(--gold); border-color: var(--gold-dim); }
-    .tag.status { color: var(--cyan); border-color: #3a5a5a; }
+    .tag + .tag::before { content: '·'; margin: 0 0.5rem; }
+    .tag.highlight { color: var(--gold); }
 
     .project-title {
       font-family: var(--serif);
-      font-size: 1.4rem;
+      font-size: 1.35rem;
       font-weight: 600;
       color: var(--cream);
       margin-bottom: 0.6rem;
@@ -440,88 +316,51 @@
     }
 
     .project-desc {
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       color: var(--muted);
       line-height: 1.75;
-      max-width: 580px;
+      max-width: 600px;
     }
 
     .project-metrics {
       display: flex;
-      gap: 1.5rem;
-      margin-top: 1.25rem;
-    }
-
-    .metric { display: flex; flex-direction: column; gap: 0.15rem; }
-
-    .metric-val {
-      font-family: var(--mono);
-      font-size: 0.95rem;
-      color: var(--gold);
-      font-weight: 500;
-    }
-
-    .metric-label {
-      font-family: var(--mono);
-      font-size: 0.6rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
+      flex-wrap: wrap;
+      gap: 0.35rem 1.75rem;
+      margin-top: 1rem;
+      list-style: none;
+      font-size: 0.875rem;
       color: var(--muted);
+    }
+
+    .project-metrics strong {
+      font-weight: 500;
+      color: var(--cream);
+      font-variant-numeric: tabular-nums;
+      margin-right: 0.3rem;
     }
 
     .project-arrow {
       font-size: 1.1rem;
-      color: var(--border);
-      padding-top: 0.3rem;
+      color: var(--muted);
+      padding-top: 0.2rem;
       transition: color 0.2s, transform 0.2s;
     }
 
     .project-card:hover .project-arrow { color: var(--gold); transform: translate(3px, -3px); }
 
     /* SKILLS */
-    .skills-grid {
+    .skills {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
+      grid-template-columns: 12rem 1fr;
+      border-bottom: 1px solid var(--border);
     }
 
-    .skill-group {
-      padding: 1.75rem;
-      border: 1px solid var(--border);
-      background: var(--bg2);
-    }
-
-    .skill-group-title {
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 1rem;
-    }
-
-    .skill-list { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
-
-    .skill-list li {
-      font-size: 0.875rem;
-      color: var(--text);
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-    }
-
-    .skill-list li::before {
-      content: '—';
-      color: var(--gold-dim);
-      font-family: var(--mono);
-      font-size: 0.7rem;
-      flex-shrink: 0;
-    }
+    .skills dt, .skills dd { padding: 0.9rem 0; border-top: 1px solid var(--border); }
+    .skills dt { font-weight: 500; color: var(--cream); }
 
     /* FOOTER */
     footer {
-      border-top: 1px solid var(--border);
-      padding: 2.5rem 3rem;
+      padding: 2.5rem var(--gutter);
       max-width: 960px;
       margin: 0 auto;
       display: flex;
@@ -531,13 +370,10 @@
 
     .footer-name { font-family: var(--serif); font-size: 0.95rem; color: var(--muted); }
 
-    .footer-links { display: flex; gap: 1.75rem; list-style: none; }
+    .footer-links { display: flex; gap: 1.5rem; list-style: none; }
 
     .footer-links a {
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
+      font-size: 0.875rem;
       color: var(--muted);
       text-decoration: none;
       transition: color 0.2s;
@@ -545,33 +381,37 @@
 
     .footer-links a:hover { color: var(--gold); }
 
-    /* ANIMATIONS */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(18px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .reveal {
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
-
-    .reveal.visible { opacity: 1; transform: none; }
-
     /* RESPONSIVE */
+    @media (max-width: 900px) {
+      :root { --gutter: 1.5rem; }
+      nav { padding-top: 1rem; padding-bottom: 1rem; }
+      .nav-links { gap: 1rem; }
+      .nav-name { font-size: 0.95rem; }
+      /* narrow screens: Projects + Résumé only; contact links remain in hero + footer */
+      .nav-links li:not(.nav-keep):not(:last-child) { display: none; }
+    }
+
     @media (max-width: 720px) {
-      nav { padding: 1rem 1.5rem; }
-      .nav-links { gap: 1.25rem; }
-      .hero, section { padding-left: 1.5rem; padding-right: 1.5rem; }
-      .hero-inner { grid-template-columns: 1fr; }
-      .hero-photo { display: none; }
-      .hero-scroll { left: 1.5rem; }
-      .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
-      .skills-grid { grid-template-columns: 1fr; }
-      .project-card { grid-template-columns: 50px 1fr auto; gap: 1rem; }
+      .hero { padding-top: 7rem; padding-bottom: 4rem; }
+      section { padding-top: 3.5rem; padding-bottom: 3.5rem; }
+      .hero-inner { grid-template-columns: 1fr; gap: 2rem; }
+      .hero-photo { order: -1; }
+      .hero-photo img { width: 112px; height: 112px; }
+      .about-cols { grid-template-columns: 1fr; gap: 2.5rem; }
+      .skills { grid-template-columns: 1fr; }
+      .skills dt { padding-bottom: 0.2rem; }
+      .skills dd { border-top: none; padding-top: 0; }
+      .project-card { gap: 1rem; }
       footer { flex-direction: column; gap: 1.25rem; text-align: center; }
-      .project-card::after { margin: 0 -1.5rem; }
+    }
+
+    /* very small phones: hero already has a View projects button */
+    @media (max-width: 360px) {
+      .nav-links .nav-keep { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
     }
   </style>
 </head>
@@ -579,32 +419,31 @@
 
   <!-- NAV -->
   <nav>
-    <span class="nav-name">Evan Scheuermann</span>
+    <a href="#" class="nav-name">Evan Scheuermann</a>
     <ul class="nav-links">
       <li><a href="#about">About</a></li>
-      <li><a href="#projects">Projects</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li class="nav-keep"><a href="#projects">Projects</a></li>
       <li><a href="#skills">Skills</a></li>
-      <li><a href="mailto:evanscheuermann@gmail.com">Contact</a></li>
-      <li><a href="resume.pdf" target="_blank" class="nav-resume">Résumé ↗</a></li>
+      <li><a href="resume.pdf" target="_blank" class="nav-resume">Résumé</a></li>
     </ul>
   </nav>
 
   <!-- HERO -->
-  <div class="hero">
+  <header class="hero">
     <div class="hero-inner">
       <div class="hero-text">
-        <p class="hero-label">Portfolio — Data Analysis & Machine Learning</p>
-        <h1>Evan<br><em>Scheuermann</em></h1>
+        <h1>Evan Scheuermann</h1>
         <p class="hero-desc">
-          Mathematics student at St. John Fisher University specializing in 
-          machine learning and econometrics. Currently in
-          Data &amp; AI Co-op at Rich Products Corporation — 
-          I build end-to-end analytical pipelines that connect rigorous 
-          quantitative methods to real business problems.
+          Mathematics student at St. John Fisher University, most recently a
+          Data &amp; AI Co-op at Rich Products Corporation building Databricks
+          pipelines and LangGraph agent systems. I'm looking for data engineering,
+          software engineering, analytics, or applied AI roles starting after I
+          graduate in May 2027.
         </p>
         <div class="hero-actions">
-          <a href="#projects" class="btn-primary">View Projects</a>
-          <a href="resume.pdf" target="_blank" class="btn-secondary">Download Résumé ↗</a>
+          <a href="#projects" class="btn-primary">View projects</a>
+          <a href="resume.pdf" target="_blank" class="btn-secondary">View résumé</a>
         </div>
         <div class="hero-meta">
           <a href="https://github.com/evan-scheuermann" target="_blank">GitHub</a>
@@ -613,214 +452,209 @@
         </div>
       </div>
 
-      <!--
-        HEADSHOT INSTRUCTIONS:
-        1. Save your LinkedIn profile photo as "headshot.jpg"
-        2. Upload it to your evan-scheuermann.github.io repo alongside index.html
-        3. Delete the .photo-placeholder div below and uncomment the <img> tag
-      -->
       <div class="hero-photo">
-        <img src="headshot.jpg" alt="Evan Scheuermann" />
+        <img src="headshot.jpg" alt="Evan Scheuermann" width="200" height="200" />
       </div>
-
     </div>
-    <span class="hero-scroll">Scroll to explore</span>
-  </div>
+  </header>
 
   <div class="divider"></div>
 
+  <main>
   <!-- ABOUT -->
   <section id="about">
-    <div class="reveal">
-      <p class="section-label">Background</p>
-      <h2 class="section-title">About Me</h2>
+    <h2 class="section-title">About</h2>
+    <div class="about-text">
+      <p>
+        I'm a math major with an economics minor at St. John Fisher University. My
+        coursework leans applied, covering machine learning, econometrics, dynamical
+        systems, and statistical modeling, and I work mostly in Python, SQL, and R.
+      </p>
+      <p>
+        Outside of class I run a self-hosted Linux server and build web apps on
+        Cloudflare. This year I'm also president of the St. John Fisher Math Club,
+        relaunching it after it had gone inactive.
+      </p>
     </div>
-    <div class="about-grid reveal">
-      <div class="about-text">
-        <p>
-          I'm a mathematics major with a minor in economics at St. John Fisher 
-          University, focusing on applied quantitative methods across machine 
-          learning, econometrics, dynamical systems, and statistical modeling.
-        </p>
-        <p>
-          This summer I'll be joining Rich Products Corporation as a Data &amp; AI 
-          Co-op, bringing classroom techniques into a production environment. 
-          I'm particularly interested in how rigorous statistical methods translate 
-          into decisions that actually matter to a business.
-        </p>
-        <p>
-          I work primarily in R and Python, with hands-on experience building 
-          end-to-end ML pipelines using caret, tidymodels, and ggplot2. Outside 
-          of data work, I tutor mathematics at St. John Fisher and have a 
-          background in supervisory roles in operations management.
-        </p>
+    <div class="about-cols">
+      <div>
+        <h3 class="side-heading">Education</h3>
+        <ul class="side-list">
+          <li>
+            <strong>St. John Fisher University</strong>
+            <span>B.S. Mathematics, minor in Economics</span>
+            <span>GPA 4.0 · Expected May 2027</span>
+          </li>
+          <li>
+            <strong>Monroe Community College</strong>
+            <span>A.S. Business Administration &amp; Management</span>
+            <span>GPA 4.0 · Graduated with Distinction</span>
+          </li>
+        </ul>
       </div>
-      <div class="about-stats">
-        <div class="stat-item">
-          <p class="stat-label">Current</p>
-          <p class="stat-value">St. John Fisher University
-            <small>B.S. Mathematics, Minor in Economics · Expected May 2027</small>
-          </p>
-        </div>
-        <div class="stat-item">
-          <p class="stat-label">Previous</p>
-          <p class="stat-value">Monroe Community College
-            <small>A.S. Business Administration &amp; Management · Graduated with Distinction</small>
-          </p>
-        </div>
-        <div class="stat-item">
-          <p class="stat-label">Current Role</p>
-          <p class="stat-value">Rich Products Corporation
-            <small>Data &amp; AI Co-op · Summer 2026</small>
-          </p>
-        </div>
-        <div class="stat-item">
-          <p class="stat-label">Honors</p>
-          <p class="stat-value">Phi Theta Kappa Honor Society
-            <small>AP Scholar with Distinction · Employee of the Year, Hilton Garden Inn</small>
-          </p>
-        </div>
+      <div>
+        <h3 class="side-heading">Honors &amp; leadership</h3>
+        <ul class="side-list">
+          <li>
+            <strong>President, Mathematics Club</strong>
+            <span>St. John Fisher University · 2026–2027</span>
+          </li>
+          <li>
+            <strong>Phi Theta Kappa Honor Society</strong>
+            <span>Monroe Community College</span>
+          </li>
+          <li>
+            <strong>AP Scholar with Distinction</strong>
+            <span>College Board</span>
+          </li>
+          <li>
+            <strong>Employee of the Year</strong>
+            <span>Hilton Garden Inn · two-time Employee of the Month</span>
+          </li>
+        </ul>
       </div>
     </div>
   </section>
 
   <div class="divider"></div>
 
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <h2 class="section-title">Experience</h2>
+
+    <div class="job">
+      <div class="job-head">
+        <h3 class="job-title">Data &amp; AI Co-op</h3>
+        <span class="job-date">May – Aug 2026</span>
+      </div>
+      <p class="job-org">Rich Products Corporation · Buffalo, NY (remote)</p>
+      <ul>
+        <li>Built the development version of a Databricks ingestion pipeline slated for production, on a bronze/silver/gold medallion architecture. It uses Playwright to collect data from a ~7,000-record web source, with change detection so each daily run processes only the records that changed.</li>
+        <li>Researched fuzzy-matching improvements for entity resolution in a production master data management system spanning millions of records, and gave the lead data engineer specific recommendations.</li>
+        <li>Independently designed and built a proof-of-concept conversational agent in LangGraph on Azure Databricks, with per-message routing, vector search for context, and tool access to product data.</li>
+        <li>Co-built a proof-of-concept seven-agent LangGraph system that automates the IT project lifecycle with human-in-the-loop checkpoints, and presented it to the CIO and VPs at an IT leadership offsite.</li>
+        <li>Selected by my manager to lead a group of three Data &amp; AI co-ops.</li>
+      </ul>
+    </div>
+
+    <div class="job">
+      <div class="job-head">
+        <h3 class="job-title">Mathematics Tutor</h3>
+        <span class="job-date">Dec 2022 – Present</span>
+      </div>
+      <p class="job-org">St. John Fisher University &amp; freelance · Rochester, NY</p>
+      <ul>
+        <li>Tutor undergraduates in calculus, statistics, and linear algebra.</li>
+      </ul>
+    </div>
+
+    <p class="job-earlier">
+      Earlier: Commissary Manager, Cousin's Maine Lobster (2024–2025) ·
+      Lead Cook, Hilton Garden Inn (2022–2024)
+    </p>
+  </section>
+
+  <div class="divider"></div>
+
   <!-- PROJECTS -->
   <section id="projects">
-    <div class="reveal">
-      <p class="section-label">Work</p>
-      <h2 class="section-title">Selected Projects</h2>
-    </div>
+    <h2 class="section-title">Projects</h2>
 
     <div class="projects-list">
 
-      <a class="project-card reveal" href="https://github.com/evan-scheuermann/customer-churn-classification" target="_blank">
-        <span class="project-num">01</span>
+      <a class="project-card" href="https://github.com/evan-scheuermann/customer-churn-classification" target="_blank">
         <div class="project-body">
           <div class="project-tags">
             <span class="tag highlight">Machine Learning</span>
-            <span class="tag">R · caret</span>
-            <span class="tag">Classification</span>
+            <span class="tag">R, caret</span>
             <span class="tag">STAT 376</span>
           </div>
           <h3 class="project-title">Customer Churn Prediction</h3>
           <p class="project-desc">
-            Comparative analysis of Random Forest, Naive Bayes, and a stacked 
-            ensemble classifier applied to a 10,000-observation bank dataset. 
-            Addressed class imbalance via downsampling and optimized the 
-            classification threshold via ROC curve analysis to maximize sensitivity — 
-            the critical metric in a customer retention context.
+            Three-person project predicting which of 10,000 bank customers will churn.
+            I led algorithm selection and built the random forest and the stacked
+            ensemble. The ensemble had the best accuracy but caught only about half of
+            churners, so we recommended the random forest with its decision threshold
+            tuned by ROC analysis. Presented at the Fisher Showcase, 2026.
           </p>
-          <div class="project-metrics">
-            <div class="metric">
-              <span class="metric-val">84.3%</span>
-              <span class="metric-label">Sensitivity</span>
-            </div>
-            <div class="metric">
-              <span class="metric-val">86.8%</span>
-              <span class="metric-label">ROC-AUC</span>
-            </div>
-            <div class="metric">
-              <span class="metric-val">0.460</span>
-              <span class="metric-label">Opt. Threshold</span>
-            </div>
-          </div>
+          <ul class="project-metrics">
+            <li><strong>84.3%</strong>sensitivity at tuned threshold</li>
+            <li><strong>0.868</strong>ROC-AUC</li>
+          </ul>
         </div>
-        <span class="project-arrow">↗</span>
+        <span class="project-arrow" aria-hidden="true">↗</span>
       </a>
 
-      <a class="project-card reveal" href="https://github.com/evan-scheuermann/ames-housing-regression" target="_blank">
-        <span class="project-num">02</span>
+      <a class="project-card" href="https://github.com/evan-scheuermann/ames-housing-regression" target="_blank">
         <div class="project-body">
           <div class="project-tags">
             <span class="tag highlight">Machine Learning</span>
-            <span class="tag">R · caret</span>
-            <span class="tag">Regression</span>
+            <span class="tag">R, caret</span>
             <span class="tag">STAT 376</span>
           </div>
-          <h3 class="project-title">Housing Price Prediction — Ames, Iowa</h3>
+          <h3 class="project-title">Ames Housing Price Prediction</h3>
           <p class="project-desc">
-            Individual project comparing Elastic Net and Random Forest regression 
-            on the Ames housing dataset (~2,930 observations, 82 variables). 
-            Explored how algorithm architecture shapes variable importance: Elastic 
-            Net distributed weight across many features while Random Forest 
-            concentrated predictive power in a single dominant variable.
+            Individual project comparing Elastic Net and random forest regression on the
+            Ames housing dataset (about 2,930 homes, 82 variables). The random forest won,
+            but only narrowly, which makes its much longer training time hard to justify.
+            The models also ranked features very differently: Elastic Net spread weight
+            across many, while the random forest leaned heavily on overall quality.
           </p>
-          <div class="project-metrics">
-            <div class="metric">
-              <span class="metric-val">88.5%</span>
-              <span class="metric-label">RF R²</span>
-            </div>
-            <div class="metric">
-              <span class="metric-val">86.2%</span>
-              <span class="metric-label">EN R²</span>
-            </div>
-            <div class="metric">
-              <span class="metric-val">~15%</span>
-              <span class="metric-label">Pred. Error</span>
-            </div>
-          </div>
+          <ul class="project-metrics">
+            <li><strong>88.5%</strong>random forest R²</li>
+            <li><strong>86.2%</strong>Elastic Net R²</li>
+            <li><strong>~15%</strong>typical price error</li>
+          </ul>
         </div>
-        <span class="project-arrow">↗</span>
+        <span class="project-arrow" aria-hidden="true">↗</span>
       </a>
 
-      <a class="project-card reveal" href="https://github.com/evan-scheuermann/steam-power-and-manufacturing" target="_blank">
-        <span class="project-num">03</span>
+      <a class="project-card" href="https://github.com/evan-scheuermann/steam-power-and-manufacturing" target="_blank">
         <div class="project-body">
           <div class="project-tags">
             <span class="tag highlight">Econometrics</span>
-            <span class="tag">R · ggplot2</span>
-            <span class="tag">Fixed Effects</span>
+            <span class="tag">R, ggplot2</span>
             <span class="tag">ECON 314</span>
-
           </div>
-          <h3 class="project-title">Steam Power & Manufacturing Productivity, 1850</h3>
+          <h3 class="project-title">Steam Power &amp; Manufacturing Productivity, 1850</h3>
           <p class="project-desc">
-            Log-linear regression with state and industry fixed effects applied to 
-            124,860 firms from the 1850 Census of Manufactures. Quantified the 
-            productivity premium of steam adoption and its heterogeneous effects 
-            across industries. Produced a choropleth heatmap of state fixed-effect 
-            coefficients revealing the outsized economic impact of the California 
-            Gold Rush.
+            Three-person project using log-linear regression with state and industry fixed
+            effects on 124,860 firms from the 1850 Census of Manufactures. I designed the
+            research question, built the regression models, and made the choropleth and
+            industry charts. Steam-powered firms produced substantially more, with the
+            largest effects in textiles, construction, and iron and steel. West Coast
+            states stand out on the map, likely because of the Gold Rush.
           </p>
-          <div class="project-metrics">
-            <div class="metric">
-              <span class="metric-val">+45.2%</span>
-              <span class="metric-label">Steam Premium</span>
-            </div>
-            <div class="metric">
-              <span class="metric-val">51.6%</span>
-              <span class="metric-label">R²</span>
-            </div>
-            <div class="metric">
-              <span class="metric-val">124,860</span>
-              <span class="metric-label">Observations</span>
-            </div>
-          </div>
+          <ul class="project-metrics">
+            <li><strong>0.452</strong>steam coefficient (log output)</li>
+            <li><strong>0.516</strong>R²</li>
+            <li><strong>124,860</strong>firms</li>
+          </ul>
         </div>
-        <span class="project-arrow">↗</span>
+        <span class="project-arrow" aria-hidden="true">↗</span>
       </a>
 
-
-      <a class="project-card reveal" href="https://github.com/evan-scheuermann/crude-oil-lifespan" target="_blank">
-        <span class="project-num">04</span>
+      <a class="project-card" href="https://github.com/evan-scheuermann/crude-oil-lifespan" target="_blank">
         <div class="project-body">
           <div class="project-tags">
             <span class="tag highlight">Dynamical Systems</span>
-            <span class="tag">R · Python</span>
-            <span class="tag">Dynamic Modeling</span>
+            <span class="tag">R, Python</span>
             <span class="tag">MATH 222</span>
           </div>
           <h3 class="project-title">Crude Oil Lifespan Modeling</h3>
           <p class="project-desc">
-            Group project modeling crude oil production lifespan using dynamical 
-            systems methods. Incorporates economic factors via price elasticity 
-            through a log-linear regression approach, designed as an independent 
-            module for clean integration with the broader system model.
+            Three-person project I led, estimating how long Earth's crude oil supply will
+            last. The model is built in stages: realistic reserves, fuel efficiency by
+            vehicle class, logistic growth of the world vehicle fleet with EV adoption,
+            and price elasticity. I built the modeling framework, wrote all of the R and
+            Python code, and wrote the report.
           </p>
+          <ul class="project-metrics">
+            <li><strong>~140 years</strong>combined estimate from 2020</li>
+            <li><strong>~700 years</strong>if EV adoption comes 50 years sooner</li>
+          </ul>
         </div>
-        <span class="project-arrow">↗</span>
+        <span class="project-arrow" aria-hidden="true">↗</span>
       </a>
 
     </div>
@@ -830,73 +664,31 @@
 
   <!-- SKILLS -->
   <section id="skills">
-    <div class="reveal">
-      <p class="section-label">Capabilities</p>
-      <h2 class="section-title">Technical Skills</h2>
-    </div>
-    <div class="skills-grid reveal">
-      <div class="skill-group">
-        <p class="skill-group-title">Languages</p>
-        <ul class="skill-list">
-          <li>R</li>
-          <li>Python</li>
-          <li>SQL (basic)</li>
-        </ul>
-      </div>
-      <div class="skill-group">
-        <p class="skill-group-title">ML & Modeling</p>
-        <ul class="skill-list">
-          <li>caret / tidymodels</li>
-          <li>Random Forest · Elastic Net</li>
-          <li>Naive Bayes · Ensemble</li>
-          <li>Cross-validation · ROC</li>
-          <li>Fixed Effects Regression</li>
-        </ul>
-      </div>
-      <div class="skill-group">
-        <p class="skill-group-title">Visualization</p>
-        <ul class="skill-list">
-          <li>ggplot2</li>
-          <li>sf · ggpattern</li>
-          <li>Choropleth mapping</li>
-          <li>Quarto / R Markdown</li>
-        </ul>
-      </div>
-      <div class="skill-group">
-        <p class="skill-group-title">Mathematics</p>
-        <ul class="skill-list">
-          <li>Linear Algebra</li>
-          <li>Differential Equations</li>
-          <li>Dynamical Systems</li>
-          <li>Econometrics</li>
-        </ul>
-      </div>
-      <div class="skill-group">
-        <p class="skill-group-title">Tools</p>
-        <ul class="skill-list">
-          <li>RStudio / Quarto</li>
-          <li>Git / GitHub</li>
-          <li>Microsoft Excel</li>
-          <li>LaTeX</li>
-        </ul>
-      </div>
-      <div class="skill-group">
-        <p class="skill-group-title">Concepts</p>
-        <ul class="skill-list">
-          <li>Model evaluation & tuning</li>
-          <li>Class imbalance handling</li>
-          <li>Feature engineering</li>
-          <li>Data cleaning & prep</li>
-        </ul>
-      </div>
-    </div>
+    <h2 class="section-title">Skills</h2>
+    <dl class="skills">
+      <dt>Languages</dt>
+      <dd>Python, SQL, R, Bash, PowerShell; familiar with JavaScript and Rust</dd>
+      <dt>Data engineering</dt>
+      <dd>Databricks, PostgreSQL, pandas, medallion architecture, ETL pipeline design, fuzzy matching &amp; MDM, Playwright</dd>
+      <dt>AI &amp; ML</dt>
+      <dd>LangGraph multi-agent systems, RAG and vector search, LLM application architecture, tidymodels, caret, model validation</dd>
+      <dt>Statistics</dt>
+      <dd>Random forest, Elastic Net, Naive Bayes, ensembles, cross-validation, ROC analysis, fixed-effects regression</dd>
+      <dt>Platforms &amp; tools</dt>
+      <dd>Azure Databricks, Azure DevOps, Cloudflare (Workers, D1, R2, Pages), Ubuntu Server, Git, Quarto, LaTeX, Excel</dd>
+      <dt>Visualization</dt>
+      <dd>ggplot2, sf, choropleth maps, R Markdown</dd>
+      <dt>Mathematics</dt>
+      <dd>Linear algebra, differential equations, dynamical systems, econometrics</dd>
+    </dl>
   </section>
+  </main>
 
   <div class="divider"></div>
 
   <!-- FOOTER -->
   <footer>
-    <span class="footer-name">Evan Scheuermann</span>
+    <span class="footer-name">Evan Scheuermann · Rochester, NY</span>
     <ul class="footer-links">
       <li><a href="https://github.com/evan-scheuermann" target="_blank">GitHub</a></li>
       <li><a href="https://www.linkedin.com/in/evan-scheuermann" target="_blank">LinkedIn</a></li>
@@ -904,19 +696,6 @@
       <li><a href="mailto:evanscheuermann@gmail.com">Email</a></li>
     </ul>
   </footer>
-
-  <script>
-    const reveals = document.querySelectorAll('.reveal');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry, i) => {
-        if (entry.isIntersecting) {
-          setTimeout(() => entry.target.classList.add('visible'), i * 80);
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.08 });
-    reveals.forEach(el => observer.observe(el));
-  </script>
 
 </body>
 </html>
