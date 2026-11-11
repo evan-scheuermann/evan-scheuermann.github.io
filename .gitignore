@@ -1,3 +1,6 @@
 # resume/: only the published PDF is tracked (tex source, build files, archive stay local)
 resume/*
 !resume/resume.pdf
+
+# Content source stays local; only generated output is published.
+content.toml

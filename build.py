@@ -1,13 +1,15 @@
-"""Build index.html and the résumé from content.toml.
+"""Build index.html and the résumés from content.toml.
 
     python build.py
 
-Writes index.html (from site.template.html) and resume/content.tex, then, if the local
-résumé source resume/resume.tex exists, compiles resume/resume.pdf and checks it is one page.
+Writes index.html (from site.template.html). Then, for each [[resumes]] target in
+content.toml, writes resume/content-<file>.tex and, if the local résumé source
+resume/resume.tex exists, compiles resume/<file>.pdf and checks it is one page.
 Stdlib only (Python 3.11+).
 """
 import html
 import re
+import shutil
 import subprocess
 import sys
 import tomllib
@@ -17,17 +19,26 @@ ROOT = Path(__file__).parent
 RESUME = ROOT / "resume"
 
 
+def fallbacks(medium):
+    # A résumé target like "resume-eng" falls back to "resume", then "text".
+    return [medium, "resume", "text"] if medium.startswith("resume-") else [medium, "text"]
+
+
 def pick(v, medium):
     """Resolve a value for one medium: variant tables -> that medium's text (None = hidden)."""
     if isinstance(v, dict):
-        v = v.get(medium, v.get("text"))
+        v = next((v[k] for k in fallbacks(medium) if k in v), None)
     if isinstance(v, str):
         return " ".join(v.split())
     return v
 
 
 def shown(entries, medium):
-    return [e for e in entries if medium in e.get("on", ["site", "resume"])]
+    # `on` may list "site", "resume" (every résumé target), or a specific target id.
+    def on(e):
+        o = e.get("on", ["site", "resume"])
+        return medium in o or (medium.startswith("resume-") and "resume" in o)
+    return [e for e in entries if on(e)]
 
 
 def texts(values, medium):
@@ -87,14 +98,21 @@ def build_site(c):
         jobs.append(f'    <p class="job-earlier">\n      Earlier: {joined}\n    </p>')
     out["experience"] = "\n\n".join(jobs)
 
+    # Research entries render as cards ahead of the projects, tagged "Research".
+    research = [dict(r, category=r.get("category", "Research")) for r in c.get("research", [])]
     cards = []
-    for p in shown(c["projects"], S):
+    for p in shown(research, S) + shown(c["projects"], S):
         tags = [f'<span class="tag highlight">{h(p["category"])}</span>'] + [
-            f'<span class="tag">{h(t)}</span>' for t in texts([p.get("stack"), p.get("course")], S)]
+            f'<span class="tag">{h(t)}</span>'
+            for t in texts([p.get("stack"), p.get("course"), p.get("date")], S)]
         metrics = "\n".join(
             f"            <li><strong>{h(m['value'])}</strong>{h(m['label'])}</li>"
             for m in p.get("metrics", []))
-        cards.append(f"""      <a class="project-card" href="{html.escape(p['link'])}" target="_blank">
+        link = p.get("link")
+        open_tag = (f'<a class="project-card" href="{html.escape(link)}" target="_blank">'
+                    if link else '<div class="project-card">')
+        arrow = '\n        <span class="project-arrow" aria-hidden="true">↗</span>' if link else ""
+        cards.append(f"""      {open_tag}
         <div class="project-body">
           <div class="project-tags">
             {''.join(tags)}
@@ -104,9 +122,8 @@ def build_site(c):
           <ul class="project-metrics">
 {metrics}
           </ul>
-        </div>
-        <span class="project-arrow" aria-hidden="true">↗</span>
-      </a>""")
+        </div>{arrow}
+      {'</a>' if link else '</div>'}""")
     out["projects"] = "\n\n".join(cards)
 
     rows = []
@@ -135,39 +152,68 @@ def t(s):
     return "".join(TEX_ESC.get(ch, ch) for ch in s)
 
 
-def build_resume(c):
-    R = "resume"
-    SEP = r"\sep "
-    L = ["% GENERATED from content.toml by build.py -- do not edit", ""]
+def item_name(p, R):
+    # Bold name; a hyperlink when the entry has `link` (needs hyperref in resume.tex).
+    name = rf"\textbf{{{t(pick(p['name'], R))}}}"
+    return rf"\href{{{p['link']}}}{{{name}}}" if p.get("link") else name
 
-    L += [r"\sect{SUMMARY}", t(pick(c["summary"], R)), "", r"\sect{EDUCATION}"]
+
+def sect_summary(c, R):
+    return [r"\sect{SUMMARY}", t(pick(c["summary"], R))]
+
+
+def sect_education(c, R):
+    SEP = r"\sep "
+    L = [r"\sect{EDUCATION}"]
     for e in c["education"]:
         L.append(rf"\entry{{{t(e['school'])}}}{{{t(e['location'])}}}{{{t(e['date'])}}}")
         L.append(SEP.join(t(x) for x in [e["degree"]] + texts(e["details"], R)))
+        if cw := pick(e.get("coursework"), R):
+            L.append(r"\par Coursework: " + t(cw))
+    return L
 
-    L += ["", r"\sect{TECHNICAL SKILLS}"]
+
+def sect_research(c, R):
+    L = [r"\sect{RESEARCH}", r"\begin{itemize}[itemsep=2.52bp]"]
+    for p in shown(c.get("research", []), R):
+        d = pick(p.get("date"), R)
+        date = f" ({t(d)})" if d else ""
+        L.append(rf"  \item {item_name(p, R)}{date} — " + t(pick(p["desc"], R)))
+    return L + [r"\end{itemize}"]
+
+
+def sect_experience(c, R):
+    L = [r"\sect{EXPERIENCE}"]
+    for j in shown(c["experience"], R):
+        L.append(rf"\entry{{{t(j['title'])}, {t(j['org'])}}}{{{t(j['location'])}}}"
+                 rf"{{{t(j['start'])} – {t(j['end'])}}}")
+        if items := texts(j["bullets"], R):  # a job can show with no bullets on a target
+            L += [r"\begin{itemize}"] + [rf"  \item {t(b)}" for b in items] + [r"\end{itemize}"]
+    return L
+
+
+def sect_projects(c, R):
+    L = [r"\sect{PROJECTS}", r"\begin{itemize}[itemsep=2.52bp]"]
+    for p in shown(c["projects"], R):
+        stack = pick(p.get("stack"), R)
+        L.append(rf"  \item {item_name(p, R)} — " + (f"{t(stack)}. " if stack else "")
+                 + t(pick(p["desc"], R)))
+    return L + [r"\end{itemize}"]
+
+
+def sect_skills(c, R):
+    SEP = r"\sep "
+    L = [r"\sect{TECHNICAL SKILLS}"]
     for s in shown(c["skills"], R):
         line = rf"\textbf{{{t(pick(s['label'], R))}}}~~" + t(", ".join(texts(s["items"], R)))
         if s.get("familiar"):
             line += SEP + "Familiar with: " + t(", ".join(s["familiar"]))
         L.append(line + r"\par")
+    return L
 
-    L += ["", r"\sect{EXPERIENCE}"]
-    for j in shown(c["experience"], R):
-        L.append(rf"\entry{{{t(j['title'])}, {t(j['org'])}}}{{{t(j['location'])}}}"
-                 rf"{{{t(j['start'])} – {t(j['end'])}}}")
-        L.append(r"\begin{itemize}")
-        L += [rf"  \item {t(b)}" for b in texts(j["bullets"], R)]
-        L.append(r"\end{itemize}")
 
-    L += ["", r"\sect{PROJECTS}", r"\begin{itemize}[itemsep=2.52bp]"]
-    for p in shown(c["projects"], R):
-        head = rf"  \item \textbf{{{t(pick(p['name'], R))}}} — "
-        stack = pick(p.get("stack"), R)
-        L.append(head + (f"{t(stack)}. " if stack else "") + t(pick(p["desc"], R)))
-    L.append(r"\end{itemize}")
-
-    L += ["", r"\sect{LEADERSHIP \& AWARDS}", r"\begin{itemize}[itemsep=2.52bp]"]
+def sect_honors(c, R):
+    L = [r"\sect{LEADERSHIP \& AWARDS}", r"\begin{itemize}[itemsep=2.52bp]"]
     for x in shown(c["honors"], R):
         line = rf"  \item \textbf{{{t(x['title'])}}}, {t(x['org'])}"
         if x.get("date"):
@@ -175,23 +221,38 @@ def build_resume(c):
         if note := pick(x.get("note"), R):
             line += f" — {t(note)}"
         L.append(line + ".")
-    L.append(r"\end{itemize}")
+    return L + [r"\end{itemize}"]
 
-    (RESUME / "content.tex").write_text("\n".join(L) + "\n", encoding="utf-8", newline="\n")
+
+SECTIONS = {"summary": sect_summary, "education": sect_education, "research": sect_research,
+            "experience": sect_experience, "projects": sect_projects, "skills": sect_skills,
+            "honors": sect_honors}
+
+
+def build_resume(c, target):
+    R, file = target["id"], target["file"]
+    L = [f"% GENERATED from content.toml by build.py (target {R}) -- do not edit", ""]
+    for name in target["sections"]:
+        L += SECTIONS[name](c, R) + [""]
+    tex = "\n".join(L) + "\n"
+    (RESUME / f"content-{file}.tex").write_text(tex, encoding="utf-8", newline="\n")
 
     if not (RESUME / "resume.tex").exists():
-        print("resume/resume.tex not found (it's local-only); skipped PDF build")
+        print(f"resume/resume.tex not found (it's local-only); skipped {file}.pdf")
         return
-    subprocess.run(["latexmk", "-xelatex", "-cd", "-quiet", "resume/resume.tex"],
-                   cwd=ROOT, check=True)
-    log = (RESUME / "resume.log").read_text(encoding="utf-8", errors="replace")
+    # resume.tex does \input{content}; point it at this target, then compile under its name.
+    shutil.copyfile(RESUME / f"content-{file}.tex", RESUME / "content.tex")
+    subprocess.run(["latexmk", "-xelatex", "-cd", "-quiet", "-g", f"-jobname={file}",
+                    "resume/resume.tex"], cwd=ROOT, check=True)
+    log = (RESUME / f"{file}.log").read_text(encoding="utf-8", errors="replace")
     pages = re.search(r"Output written on \S+ \((\d+) page", log)
     if not pages or pages.group(1) != "1":
-        sys.exit(f"résumé is {pages.group(1) if pages else '?'} pages, must be 1 — trim content.toml")
+        sys.exit(f"{file}.pdf is {pages.group(1) if pages else '?'} pages, must be 1 — trim content.toml")
 
 
 if __name__ == "__main__":
     content = tomllib.loads((ROOT / "content.toml").read_text(encoding="utf-8"))
     build_site(content)
-    build_resume(content)
-    print("built index.html and resume/resume.pdf")
+    for target in content["resumes"]:
+        build_resume(content, target)
+    print("built index.html and " + ", ".join(f"resume/{r['file']}.pdf" for r in content["resumes"]))

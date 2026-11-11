@@ -459,6 +459,7 @@
     <h2 class="section-title">About</h2>
     <div class="about-text">
       <p>I'm a math major with an economics minor at St. John Fisher University. My coursework leans applied, covering machine learning, econometrics, dynamical systems, and statistical modeling, and I work mostly in Python, SQL, and R.</p>
+      <p>Longer term, I want to use mathematics in medical research. My senior capstone, on texture features for cancer imaging, is my first step in that direction.</p>
       <p>Outside of class I run a self-hosted Linux server and build web apps on Cloudflare. This year I'm also president of the St. John Fisher Math Club, relaunching it after it had gone inactive.</p>
     </div>
     <div class="about-cols">
@@ -514,10 +515,11 @@
       </div>
       <p class="job-org">Rich Products Corporation · Buffalo, NY (remote)</p>
       <ul>
-        <li>Built the development version of a Databricks ingestion pipeline slated for production, on a bronze/silver/gold medallion architecture. It uses Playwright to collect data from a ~7,000-record web source, with change detection so each daily run processes only the records that changed.</li>
+        <li>Built the data ingestion for a production project: an agent my manager's team was building to automate much of accounting's billback and trade-deduction work. In three weeks I built three Databricks jobs. A weekly job does a full import of ~7,000 trade programs, a daily job loads only new or changed programs, and a second daily job loads deductions. All three collect data from an external portal with Playwright, run sanity checks, and load bronze and silver Delta tables. Pulling the data into Databricks meant the agent never needed access to the external site.</li>
+        <li>Fit the jobs to the team's medallion pipeline standards through config files, kept credentials in Azure Key Vault, and ran the scraper with least-privilege permissions and guardrails. I worked inside the team's sprint process with Azure DevOps, a project manager, and daily stand-ups.</li>
         <li>Researched fuzzy-matching improvements for entity resolution in a production master data management system spanning millions of records, and gave the lead data engineer specific recommendations.</li>
-        <li>Independently designed and built a proof-of-concept conversational agent in LangGraph on Azure Databricks, with per-message routing, vector search for context, and tool access to product data.</li>
-        <li>Co-built a proof-of-concept seven-agent LangGraph system that automates the IT project lifecycle with human-in-the-loop checkpoints, and presented it to the CIO and VPs at an IT leadership offsite.</li>
+        <li>Independently designed and built a prototype conversational agent in LangGraph on Azure Databricks for customer product inquiries, with per-message routing, vector search for context, and tool access to product data.</li>
+        <li>Co-built a seven-agent LangGraph prototype to automate the IT project lifecycle with human-in-the-loop checkpoints, and presented it to the CIO and VPs at an IT leadership offsite.</li>
         <li>Selected by my manager to lead a group of three Data &amp; AI co-ops.</li>
       </ul>
     </div>
@@ -547,6 +549,32 @@
 
     <div class="projects-list">
 
+      <div class="project-card">
+        <div class="project-body">
+          <div class="project-tags">
+            <span class="tag highlight">Research</span><span class="tag">Capstone · Spring 2027</span>
+          </div>
+          <h3 class="project-title">GLCM Texture Features for Cancer Imaging</h3>
+          <p class="project-desc">My senior capstone, which I'm developing now in senior seminar ahead of the spring. Gray-level co-occurrence matrices (GLCMs) turn an image's texture into features that machine learning models use to help detect cancer. Because those features depend on direction, they're usually computed in several directions and averaged. My question is mathematical: how averaging nonlinear features across directions relates to computing them from a single merged matrix, and when the difference matters.</p>
+          <ul class="project-metrics">
+
+          </ul>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-body">
+          <div class="project-tags">
+            <span class="tag highlight">Research</span><span class="tag">MATH 496 · Fall 2026</span>
+          </div>
+          <h3 class="project-title">Graph Theory &amp; Markov Chains in Agent Design</h3>
+          <p class="project-desc">Independent study built on my co-op. I'm writing a paper, poster, and public talk on graph theory and Markov chains as ways to model LangGraph agent workflows, applied to an agent I built at Rich Products. In progress.</p>
+          <ul class="project-metrics">
+
+          </ul>
+        </div>
+      </div>
+
       <a class="project-card" href="https://github.com/evan-scheuermann/customer-churn-classification" target="_blank">
         <div class="project-body">
           <div class="project-tags">
@@ -557,22 +585,6 @@
           <ul class="project-metrics">
             <li><strong>84.3%</strong>sensitivity at tuned threshold</li>
             <li><strong>0.868</strong>ROC-AUC</li>
-          </ul>
-        </div>
-        <span class="project-arrow" aria-hidden="true">↗</span>
-      </a>
-
-      <a class="project-card" href="https://github.com/evan-scheuermann/ames-housing-regression" target="_blank">
-        <div class="project-body">
-          <div class="project-tags">
-            <span class="tag highlight">Machine Learning</span><span class="tag">R, caret</span><span class="tag">STAT 376</span>
-          </div>
-          <h3 class="project-title">Ames Housing Price Prediction</h3>
-          <p class="project-desc">Individual project comparing Elastic Net and random forest regression on the Ames housing dataset (about 2,930 homes, 82 variables). The random forest won, but only narrowly, which makes its much longer training time hard to justify. The models also ranked features very differently: Elastic Net spread weight across many, while the random forest leaned heavily on overall quality.</p>
-          <ul class="project-metrics">
-            <li><strong>88.5%</strong>random forest R²</li>
-            <li><strong>86.2%</strong>Elastic Net R²</li>
-            <li><strong>~15%</strong>typical price error</li>
           </ul>
         </div>
         <span class="project-arrow" aria-hidden="true">↗</span>
@@ -609,6 +621,22 @@
         <span class="project-arrow" aria-hidden="true">↗</span>
       </a>
 
+      <a class="project-card" href="https://github.com/evan-scheuermann/ames-housing-regression" target="_blank">
+        <div class="project-body">
+          <div class="project-tags">
+            <span class="tag highlight">Machine Learning</span><span class="tag">R, caret</span><span class="tag">STAT 376</span>
+          </div>
+          <h3 class="project-title">Ames Housing Price Prediction</h3>
+          <p class="project-desc">Individual project comparing Elastic Net and random forest regression on the Ames housing dataset (about 2,930 homes, 82 variables). The random forest won, but only narrowly, which makes its much longer training time hard to justify. The models also ranked features very differently: Elastic Net spread weight across many, while the random forest leaned heavily on overall quality.</p>
+          <ul class="project-metrics">
+            <li><strong>88.5%</strong>random forest R²</li>
+            <li><strong>86.2%</strong>Elastic Net R²</li>
+            <li><strong>~15%</strong>typical price error</li>
+          </ul>
+        </div>
+        <span class="project-arrow" aria-hidden="true">↗</span>
+      </a>
+
     </div>
   </section>
 
@@ -621,13 +649,13 @@
       <dt>Languages</dt>
       <dd>Python, SQL, R, Bash, PowerShell; familiar with JavaScript and Rust</dd>
       <dt>Data engineering</dt>
-      <dd>Databricks, PostgreSQL, pandas, medallion architecture, ETL pipeline design, fuzzy matching &amp; MDM, Playwright</dd>
+      <dd>Databricks, Delta Lake, PostgreSQL, pandas, medallion architecture, ETL pipeline design, fuzzy matching &amp; MDM, Playwright</dd>
       <dt>AI &amp; ML</dt>
       <dd>LangGraph multi-agent systems, RAG and vector search, LLM application architecture, tidymodels, caret, model validation</dd>
       <dt>Statistics</dt>
       <dd>Random forest, Elastic Net, Naive Bayes, ensembles, cross-validation, ROC analysis, fixed-effects regression</dd>
       <dt>Platforms &amp; tools</dt>
-      <dd>Azure Databricks, Azure DevOps, Cloudflare (Workers, D1, R2, Pages), Ubuntu Server, Git, Quarto, LaTeX, Excel</dd>
+      <dd>Azure Databricks, Azure DevOps, Azure Key Vault, Cloudflare (Workers, D1, R2, Pages), Ubuntu Server, Git, Quarto, LaTeX, Excel</dd>
       <dt>Visualization</dt>
       <dd>ggplot2, sf, choropleth maps, R Markdown</dd>
       <dt>Mathematics</dt>

@@ -6,12 +6,12 @@ locally from one content file.
 
 | Path | What it is |
 | --- | --- |
-| `content.toml` | **Source of truth** for everything on the site and the résumé: summary, education, experience, projects, skills, honors |
-| `build.py` | Generates `index.html` and the résumé from `content.toml` (Python 3.11+, stdlib only) |
+| `content.toml` | **Source of truth** for the site and every résumé variant. **Gitignored; kept local only.** |
+| `build.py` | Generates `index.html` and one PDF per `[[resumes]]` target from `content.toml` (Python 3.11+, stdlib only) |
 | `site.template.html` | Site layout: markup, inline CSS, nav/hero/footer, with `{{markers}}` where content goes |
 | `index.html` | **Generated.** Don't edit it directly; it's committed because Pages serves it |
 | `headshot.jpg`, `favicon.svg`, `apple-touch-icon.png` | Image assets |
-| `resume/resume.pdf` | Generated résumé, linked from the site's nav, hero and footer |
+| `resume/resume.pdf` | Generated engineering résumé (target `resume-eng`), linked from the site's nav, hero and footer. Other targets (e.g. `resume-med.pdf`) build locally and are not committed |
 
 ## Updating content
 
@@ -20,9 +20,10 @@ locally from one content file.
      two need different wording. Give only one of the two keys to show it in one place only.
    - Whole entries take `on = ["site"]` or `on = ["resume"]` to appear in just one.
    - The résumé is denser and has to fit on one page, so its wording usually differs.
-2. Run `python build.py` from the repo root. It writes `index.html`, writes `resume/content.tex`,
-   compiles `resume/resume.pdf`, and fails if the résumé runs past one page.
-3. Commit `content.toml`, `index.html` and `resume/resume.pdf`.
+2. Run `python build.py` from the repo root. It writes `index.html`, then for each `[[resumes]]`
+   target writes `resume/content-<file>.tex`, compiles `resume/<file>.pdf`, and fails if any
+   résumé runs past one page.
+3. Commit `index.html` and `resume/resume.pdf` (not `content.toml`, which is gitignored).
 
 Layout changes go in `site.template.html` (site) or `resume/resume.tex` (résumé), followed by
 a rebuild.
