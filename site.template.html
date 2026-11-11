@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<!-- GENERATED: edit content.toml and site.template.html, then run `python build.py`. Do not edit index.html directly. -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Evan Scheuermann</title>
+  <meta name="description" content="Evan Scheuermann, mathematics student at St. John Fisher University. Data engineering, machine learning, and applied AI projects." />
+  <meta property="og:title" content="Evan Scheuermann" />
+  <meta property="og:description" content="Mathematics student at St. John Fisher University. Data engineering, machine learning, and applied AI projects." />
+  <meta property="og:image" content="https://evan-scheuermann.github.io/headshot.jpg" />
+  <meta property="og:url" content="https://evan-scheuermann.github.io/" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="theme-color" content="#1e2029" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#f7f5f0" media="(prefers-color-scheme: light)" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,600..700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #1e2029;
+      --border:    #383b4f;
+      --gold:      #c4a96a;
+      --gold-dim:  #7a6535;
+      --cream:     #e8e4da;
+      --muted:     #9296b0;
+      --text:      #cdd0e0;
+      --serif:     'Source Serif 4', Georgia, serif;
+      --sans:      'DM Sans', sans-serif;
+      --gutter:    3rem;
+      /* left/right padding that lines full-width bars up with the 960px content column */
+      --edge:      max(var(--gutter), (100% - 960px) / 2 + var(--gutter));
+      color-scheme: dark;
+    }
+
+    /* light mode follows the visitor's system setting */
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg:        #f7f5f0;
+        --border:    #dcd6c8;
+        --gold:      #7d6128;
+        --gold-dim:  #b39a62;
+        --cream:     #1c1f2b;
+        --muted:     #5d6178;
+        --text:      #33364a;
+        color-scheme: light;
+      }
+    }
+
+    html { scroll-behavior: smooth; }
+
+    ::selection { background: var(--gold); color: var(--bg); }
+    h1, h2, h3 { text-wrap: balance; }
+    p, li, dd { text-wrap: pretty; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-weight: 400;
+      line-height: 1.7;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    a:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.1rem var(--edge);
+      background: color-mix(in srgb, var(--bg) 88%, transparent);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-name {
+      font-family: var(--serif);
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: var(--cream);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.75rem;
+      list-style: none;
+      align-items: center;
+    }
+
+    .nav-links a {
+      font-size: 0.875rem;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--gold); }
+
+    .nav-links .nav-resume { color: var(--cream); font-weight: 500; }
+    .nav-links .nav-resume:hover { color: var(--gold); }
+
+    /* HERO */
+    .hero {
+      padding: 10rem var(--gutter) 6rem;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .hero h1 {
+      font-family: var(--serif);
+      font-size: clamp(2.25rem, 6vw, 4rem);
+      font-weight: 700;
+      color: var(--cream);
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      margin-bottom: 1.25rem;
+    }
+
+    .hero-desc {
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 520px;
+      line-height: 1.8;
+      margin-bottom: 2.25rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+
+    .btn-primary, .btn-secondary {
+      font-size: 0.9rem;
+      font-weight: 500;
+      padding: 0.65rem 1.3rem;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      color: var(--bg);
+      background: var(--gold);
+      transition: background 0.2s;
+    }
+
+    .btn-primary:hover { background: var(--cream); }
+
+    .btn-secondary {
+      color: var(--text);
+      border: 1px solid var(--border);
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .btn-secondary:hover { color: var(--gold); border-color: var(--gold-dim); }
+
+    .hero-meta {
+      display: flex;
+      gap: 0.75rem 1.75rem;
+      flex-wrap: wrap;
+    }
+
+    .hero-meta a {
+      font-size: 0.875rem;
+      color: var(--muted);
+      text-decoration: none;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 2px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .hero-meta a:hover { color: var(--gold); border-color: var(--gold); }
+
+    .hero-photo img {
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
+      object-position: center top;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      display: block;
+    }
+
+    /* SECTIONS */
+    section {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 5rem var(--gutter);
+    }
+
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(1.75rem, 3.5vw, 2.25rem);
+      font-weight: 600;
+      color: var(--cream);
+      margin-bottom: 2rem;
+      line-height: 1.2;
+    }
+
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 0 var(--edge);
+    }
+
+    /* ABOUT */
+    .about-text { max-width: 640px; margin-bottom: 3.5rem; }
+    .about-text p { font-size: 1.05rem; line-height: 1.8; margin-bottom: 1.1rem; }
+    .about-text p:last-child { margin-bottom: 0; }
+
+    .about-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    .side-heading {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--gold);
+      margin-bottom: 0.75rem;
+    }
+
+    .side-list { list-style: none; border-bottom: 1px solid var(--border); }
+    .side-list li { padding: 0.8rem 0; border-top: 1px solid var(--border); }
+    .side-list strong { display: block; font-weight: 500; color: var(--cream); }
+    .side-list span { display: block; font-size: 0.875rem; color: var(--muted); }
+
+    /* EXPERIENCE */
+    .job { padding: 2rem 0; border-top: 1px solid var(--border); }
+
+    .job-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 0.25rem 1rem;
+    }
+
+    .job-title {
+      font-family: var(--serif);
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--cream);
+    }
+
+    .job-date { font-size: 0.875rem; color: var(--muted); white-space: nowrap; }
+    .job-org { font-size: 0.925rem; color: var(--muted); }
+
+    .job ul { margin-top: 0.9rem; padding-left: 1.1rem; max-width: 640px; }
+    .job li { margin-bottom: 0.4rem; }
+    .job li::marker { color: var(--gold-dim); }
+
+    .job-earlier {
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    /* PROJECTS */
+    .project-card {
+      border-top: 1px solid var(--border);
+      padding: 2.25rem 0;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 2rem;
+      align-items: start;
+      text-decoration: none;
+    }
+
+    .project-card:last-child { border-bottom: 1px solid var(--border); }
+    .project-card:hover .project-title { color: var(--gold); }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      font-size: 0.825rem;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+    }
+
+    .tag + .tag::before { content: '·'; margin: 0 0.5rem; }
+    .tag.highlight { color: var(--gold); }
+
+    .project-title {
+      font-family: var(--serif);
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: var(--cream);
+      margin-bottom: 0.6rem;
+      line-height: 1.3;
+      transition: color 0.2s;
+    }
+
+    .project-desc {
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.75;
+      max-width: 600px;
+    }
+
+    .project-metrics {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem 1.75rem;
+      margin-top: 1rem;
+      list-style: none;
+      font-size: 0.875rem;
+      color: var(--muted);
+    }
+
+    .project-metrics strong {
+      font-weight: 500;
+      color: var(--cream);
+      font-variant-numeric: tabular-nums;
+      margin-right: 0.3rem;
+    }
+
+    .project-arrow {
+      font-size: 1.1rem;
+      color: var(--muted);
+      padding-top: 0.2rem;
+      transition: color 0.2s, transform 0.2s;
+    }
+
+    .project-card:hover .project-arrow { color: var(--gold); transform: translate(3px, -3px); }
+
+    /* SKILLS */
+    .skills {
+      display: grid;
+      grid-template-columns: 12rem 1fr;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .skills dt, .skills dd { padding: 0.9rem 0; border-top: 1px solid var(--border); }
+    .skills dt { font-weight: 500; color: var(--cream); }
+
+    /* FOOTER */
+    footer {
+      padding: 2.5rem var(--gutter);
+      max-width: 960px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-name { font-family: var(--serif); font-size: 0.95rem; color: var(--muted); }
+
+    .footer-links { display: flex; gap: 1.5rem; list-style: none; }
+
+    .footer-links a {
+      font-size: 0.875rem;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--gold); }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      :root { --gutter: 1.5rem; }
+      nav { padding-top: 1rem; padding-bottom: 1rem; }
+      .nav-links { gap: 1rem; }
+      .nav-name { font-size: 0.95rem; }
+      /* narrow screens: Projects + Résumé only; contact links remain in hero + footer */
+      .nav-links li:not(.nav-keep):not(:last-child) { display: none; }
+    }
+
+    @media (max-width: 720px) {
+      .hero { padding-top: 7rem; padding-bottom: 4rem; }
+      section { padding-top: 3.5rem; padding-bottom: 3.5rem; }
+      .hero-inner { grid-template-columns: 1fr; gap: 2rem; }
+      .hero-photo { order: -1; }
+      .hero-photo img { width: 112px; height: 112px; }
+      .about-cols { grid-template-columns: 1fr; gap: 2.5rem; }
+      .skills { grid-template-columns: 1fr; }
+      .skills dt { padding-bottom: 0.2rem; }
+      .skills dd { border-top: none; padding-top: 0; }
+      .project-card { gap: 1rem; }
+      footer { flex-direction: column; gap: 1.25rem; text-align: center; }
+    }
+
+    /* very small phones: hero already has a View projects button */
+    @media (max-width: 360px) {
+      .nav-links .nav-keep { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-name">Evan Scheuermann</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li class="nav-keep"><a href="#projects">Projects</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="resume/resume.pdf" target="_blank" class="nav-resume">Résumé</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-text">
+        <h1>Evan Scheuermann</h1>
+        <p class="hero-desc">{{summary}}</p>
+        <div class="hero-actions">
+          <a href="#projects" class="btn-primary">View projects</a>
+          <a href="resume/resume.pdf" target="_blank" class="btn-secondary">View résumé</a>
+        </div>
+        <div class="hero-meta">
+          <a href="https://github.com/evan-scheuermann" target="_blank">GitHub</a>
+          <a href="https://www.linkedin.com/in/evan-scheuermann" target="_blank">LinkedIn</a>
+          <a href="mailto:evanscheuermann@gmail.com">evanscheuermann@gmail.com</a>
+        </div>
+      </div>
+
+      <div class="hero-photo">
+        <img src="headshot.jpg" alt="Evan Scheuermann" width="200" height="200" />
+      </div>
+    </div>
+  </header>
+
+  <div class="divider"></div>
+
+  <main>
+  <!-- ABOUT -->
+  <section id="about">
+    <h2 class="section-title">About</h2>
+    <div class="about-text">
+{{about}}
+    </div>
+    <div class="about-cols">
+      <div>
+        <h3 class="side-heading">Education</h3>
+        <ul class="side-list">
+{{education}}
+        </ul>
+      </div>
+      <div>
+        <h3 class="side-heading">Honors &amp; leadership</h3>
+        <ul class="side-list">
+{{honors}}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <h2 class="section-title">Experience</h2>
+
+{{experience}}
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <h2 class="section-title">Projects</h2>
+
+    <div class="projects-list">
+
+{{projects}}
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <h2 class="section-title">Skills</h2>
+    <dl class="skills">
+{{skills}}
+    </dl>
+  </section>
+  </main>
+
+  <div class="divider"></div>
+
+  <!-- FOOTER -->
+  <footer>
+    <span class="footer-name">Evan Scheuermann · Rochester, NY</span>
+    <ul class="footer-links">
+      <li><a href="https://github.com/evan-scheuermann" target="_blank">GitHub</a></li>
+      <li><a href="https://www.linkedin.com/in/evan-scheuermann" target="_blank">LinkedIn</a></li>
+      <li><a href="resume/resume.pdf" target="_blank">Résumé</a></li>
+      <li><a href="mailto:evanscheuermann@gmail.com">Email</a></li>
+    </ul>
+  </footer>
+
+</body>
+</html>

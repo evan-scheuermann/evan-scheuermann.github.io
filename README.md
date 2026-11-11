@@ -1,28 +1,42 @@
 # evan-scheuermann.github.io
 
 Personal portfolio site, served by GitHub Pages at <https://evan-scheuermann.github.io>.
-It's a single static page with no build step.
+GitHub Pages serves the committed files as-is. The site and the résumé are both generated
+locally from one content file.
 
 | Path | What it is |
 | --- | --- |
-| `index.html` | The whole site: markup and inline CSS (fonts from Google Fonts) |
+| `content.toml` | **Source of truth** for everything on the site and the résumé: summary, education, experience, projects, skills, honors |
+| `build.py` | Generates `index.html` and the résumé from `content.toml` (Python 3.11+, stdlib only) |
+| `site.template.html` | Site layout: markup, inline CSS, nav/hero/footer, with `{{markers}}` where content goes |
+| `index.html` | **Generated.** Don't edit it directly; it's committed because Pages serves it |
 | `headshot.jpg`, `favicon.svg`, `apple-touch-icon.png` | Image assets |
-| `resume/resume.pdf` | Résumé, linked from the site's nav, hero and footer |
+| `resume/resume.pdf` | Generated résumé, linked from the site's nav, hero and footer |
+
+## Updating content
+
+1. Edit `content.toml`. Conventions are in the comments at the top of the file. In short:
+   - Any text can be one string (used on both) or `{ site = "...", resume = "..." }` when the
+     two need different wording. Give only one of the two keys to show it in one place only.
+   - Whole entries take `on = ["site"]` or `on = ["resume"]` to appear in just one.
+   - The résumé is denser and has to fit on one page, so its wording usually differs.
+2. Run `python build.py` from the repo root. It writes `index.html`, writes `resume/content.tex`,
+   compiles `resume/resume.pdf`, and fails if the résumé runs past one page.
+3. Commit `content.toml`, `index.html` and `resume/resume.pdf`.
+
+Layout changes go in `site.template.html` (site) or `resume/resume.tex` (résumé), followed by
+a rebuild.
 
 ## Résumé
 
 `resume/` is the résumé workspace. **Only `resume/resume.pdf` is committed.** Everything
-else there (the LaTeX source `resume.tex`, build files, and `resume-archive/` with
-older versions and notes) is gitignored on purpose and stays local.
+else there is gitignored on purpose and stays local: the LaTeX source `resume.tex` (layout,
+macros, and the contact header with the phone number), the generated `content.tex`, build
+files, and `resume-archive/` with older versions and notes.
 
-To update the résumé:
+`resume.tex` holds only the layout and header and pulls in `content.tex` with `\input`. The
+PDF build needs XeLaTeX and latexmk (for example TinyTeX or TeX Live) plus the Arial system
+font; the source is tuned to match the original Word layout line for line. On a fresh clone
+without `resume.tex`, `build.py` still regenerates the site and skips the PDF.
 
-1. Edit `resume/resume.tex`.
-2. Build it (from the repo root; `-cd` makes latexmk work inside `resume/`):
-   ```sh
-   latexmk -xelatex -cd resume/resume.tex   # writes resume/resume.pdf
-   latexmk -c -cd resume/resume.tex         # optional: clean up aux/log files
-   ```
-   This needs XeLaTeX (for example TinyTeX or TeX Live) and the Arial system font.
-   The source is tuned to match the original Word layout line for line.
-3. Commit `resume/resume.pdf`.
+To clean up LaTeX aux/log files: `latexmk -c -cd resume/resume.tex`.
