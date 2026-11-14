@@ -108,20 +108,22 @@ def build_site(c):
         metrics = "\n".join(
             f"            <li><strong>{h(m['value'])}</strong>{h(m['label'])}</li>"
             for m in p.get("metrics", []))
+        if metrics:
+            metrics = f'\n          <ul class="project-metrics">\n{metrics}\n          </ul>'
         link = p.get("link")
         open_tag = (f'<a class="project-card" href="{html.escape(link)}" target="_blank">'
                     if link else '<div class="project-card">')
-        arrow = '\n        <span class="project-arrow" aria-hidden="true">↗</span>' if link else ""
+        # "GitHub ↗" affordance; the arrow icon comes from the sprite in site.template.html
+        label = "GitHub" if link and "github.com" in link else "View"
+        arrow = (f'\n        <span class="project-link" aria-hidden="true">{label}'
+                 '<svg class="icon"><use href="#i-arrow" /></svg></span>') if link else ""
         cards.append(f"""      {open_tag}
         <div class="project-body">
           <div class="project-tags">
             {''.join(tags)}
           </div>
           <h3 class="project-title">{h(pick(p['name'], S))}</h3>
-          <p class="project-desc">{h(pick(p['desc'], S))}</p>
-          <ul class="project-metrics">
-{metrics}
-          </ul>
+          <p class="project-desc">{h(pick(p['desc'], S))}</p>{metrics}
         </div>{arrow}
       {'</a>' if link else '</div>'}""")
     out["projects"] = "\n\n".join(cards)

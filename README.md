@@ -26,7 +26,21 @@ locally from one content file.
 3. Commit `index.html` and `resume/resume.pdf` (not `content.toml`, which is gitignored).
 
 Layout changes go in `site.template.html` (site) or `resume/resume.tex` (résumé), followed by
-a rebuild.
+a rebuild. To rebuild only the site without recompiling the PDFs:
+`python -c "import tomllib,build; build.build_site(tomllib.loads(open('content.toml',encoding='utf-8').read()))"`
+
+## Theme
+
+The site has a Light / Dark / System toggle in the nav, defaulting to System. Everything
+lives in `site.template.html`:
+
+- Colors are CSS variables. Dark is the base `:root`, and the light palette appears twice:
+  once under `prefers-color-scheme: light` (System mode) and once under
+  `:root[data-theme="light"]`. Keep the two blocks identical.
+- A tiny script in `<head>` applies a saved choice before first paint. The script at the end of
+  `<body>` runs the toggle and highlights the nav link for the section in view.
+- The choice is saved in `localStorage` under `theme` (`light` or `dark`). No key means System.
+- Icons are an inline Lucide SVG sprite at the top of `<body>`. `build.py` uses `#i-arrow` from it.
 
 ## Résumé
 
